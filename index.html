@@ -1,42 +1,62 @@
+```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Captcha Solver</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captcha Solver</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 50px;
+        }
+        button {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Captcha Solver</h1>
-    
-    <form>
-      <div class="form-group">
-        <label for="captcha-image">Captcha Image:</label>
-        <img src="captcha.jpg" alt="Captcha Image" id="captcha-image">
-      </div>
-      
-      <div class="form-group">
-        <label for="captcha-input">Enter Captcha Text:</label>
-        <input type="text" class="form-control" id="captcha-input">
-      </div>
-      
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-    
-    <div id="result"></div>
-  </div>
+    <div class="container">
+        <h1 class="text-center">Captcha Solver</h1>
+        <div class="mb-3">
+            <label for="captchaImage" class="form-label">Captcha Image:</label>
+            <img src="captcha.jpg" alt="Captcha Image" id="captchaImage" class="img-fluid">
+        </div>
+        <div class="mb-3">
+            <label for="captchaInput" class="form-label">Enter Captcha Text:</label>
+            <input type="text" id="captchaInput" class="form-control">
+        </div>
+        <div class="text-center">
+            <button class="btn btn-primary" onclick="solveCaptcha()">Solve Captcha</button>
+        </div>
+        <div class="mt-3" id="output"></div>
+    </div>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script>
-    $('form').submit(function(e) {
-      e.preventDefault();
-      var captchaText = $('#captcha-input').val();
-      
-      // Call backend API to solve captcha
-      $.post('https://api.captchasolver.com/solve', {text: captchaText}, function(data) {
-        $('#result').html('Captcha solved: ' + data);
-      });
-    });
-  </script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function solveCaptcha() {
+            const captchaInput = document.getElementById('captchaInput').value;
+            axios.post('http://api.solvecaptcha.com', { captcha: captchaInput })
+                .then(response => {
+                    document.getElementById('output').innerHTML = `Captcha Solved: ${response.data}`;
+                })
+                .catch(error => {
+                    document.getElementById('output').innerHTML = `Error solving captcha: ${error.message}`;
+                });
+        }
+    </script>
 </body>
 </html>
+```
+This is a basic HTML application that allows users to enter captcha text and solve it by clicking a button. The captcha solving process is simulated using a JavaScript function that makes a POST request to a dummy API endpoint. The solved captcha text is then displayed on the screen. The UI is designed using Bootstrap for a clean and responsive layout.
